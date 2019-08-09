@@ -24,7 +24,7 @@ connection.connect(function(err) {
 });
 
 function start() {
-    connection.query(`SELECT product_name, department from products`, function(err, results) {
+    connection.query(`SELECT product_name, department, price from products`, function(err, results) {
         if (err) throw err;
         makeTable(results);
         display();
@@ -39,14 +39,38 @@ function makeTable(info) {
     var c = 1; //keeps track of, and numbers the items
     console.log(`\n\n`);
     console.log(`----------Here's what's available----------\n`);
+
     for (var i = 0; i < info.length; i++) {
         // console.log(`${c}:  ${info[i].product_name}----------${info[i].department}`.bgBlue);
         // makes the foreground blue and background yellow for the item number and product name
         // because why not
-        console.log("\x1b[43m\x1b[34m%s\x1b[0m", `${c}:  ${info[i].product_name}`, `${info[i].department}`);
+        var nameWithDashes = addLines(info[i].product_name);
+        var depWithDashes = addLines(info[i].department);
+
+
+        console.log("\x1b[43m\x1b[30m%s\x1b[40m\x1b[36m%s\x1b[44m\x1b[37m%s\x1b[0m", `${c }:  ${nameWithDashes}`, `Department: ${depWithDashes}`, `Our Price: ${info[i].price}`);
         c++;
     }
     console.log(`\n\n`);
+}
+
+// makes the console equal length
+function addLines(str) {
+    var arr = [];
+    var count = 30;
+    var y = "";
+
+    for (var i = 0; i < str.length; i++) {
+        arr.push(str[i]);
+        count--;
+    }
+
+    for (var j = 0; j < count; j++) {
+        arr.push("-");
+    }
+
+    y = arr.join("");
+    return y;
 }
 
 function display() {
@@ -89,7 +113,7 @@ function display() {
                 console.log(`${amount}  of this:  ${info[item - 1].product_name}`.green);
                 console.log(`---------------------`);
                 console.log(`${info[item - 1].price} * ${amount}`.red);
-                console.log(`You owe ${amount * info[item - 1].price}`);
+                console.log(`You owe ${Math.round(amount * info[item - 1].price)}`);
                 console.log(`---------------------\n`);
                 // updateStore(item, amount);
             } else {
