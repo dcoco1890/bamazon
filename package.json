@@ -1,0 +1,24 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "command line \"amazon\" that uses nodejs and MySQL",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dcoco1890/bamazon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dcoco1890/bamazon/issues"
+  },
+  "homepage": "https://github.com/dcoco1890/bamazon#readme",
+  "dependencies": {
+    "colors": "^1.3.3",
+    "inquirer": "^6.5.0",
+    "mysql": "^2.17.1"
+  }
+}
