@@ -113,7 +113,7 @@ function display() {
                 console.log(`${amount}  of this:  ${info[item - 1].product_name}`.green);
                 console.log(`---------------------`);
                 console.log(`${info[item - 1].price} * ${amount}`.red);
-                console.log(`You owe ${Math.round(amount * info[item - 1].price)}`);
+                console.log(`You owe ${(amount * info[item - 1].price).toPrecision(4)}`);
                 console.log(`---------------------\n`);
                 // updateStore(item, amount);
             } else {
