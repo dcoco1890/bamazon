@@ -113,9 +113,9 @@ function display() {
                 console.log(`${amount}  of this:  ${info[item - 1].product_name}`.green);
                 console.log(`---------------------`);
                 console.log(`${info[item - 1].price} * ${amount}`.red);
-                console.log(`You owe ${(amount * info[item - 1].price).toPrecision(4)}`);
+                console.log(`You owe $${(amount * info[item - 1].price).toPrecision(4)}`);
                 console.log(`---------------------\n`);
-                // updateStore(item, amount);
+                updateStore(item, amount, x);
             } else {
                 console.log(`Sorry, we don't have enough of that!`);
             }
@@ -134,6 +134,19 @@ function display() {
     })
 };
 
-function updateStore(product, amount) {
+function updateStore(product, amount, stock) {
+    var newStock = stock - amount;
+
+    var q = `UPDATE products SET ? where ?`
+    connection.query(q, [{
+            stock: newStock
+        },
+        {
+            id: product
+        }
+    ], function(error, res) {
+        if (error) throw error
+        console.log(res);
+    });
 
 }
