@@ -107,26 +107,23 @@ function display() {
             var item = ans.item;
             var amount = ans.howmany;
             var x = info[item - 1].stock;
+            var name = info[item - 1].product_name
+
+
 
             if (amount <= x) {
+                updateStore(name, item, amount, x);
                 console.log(`\nPlacing your order for`);
-                console.log(`${amount}  of this:  ${info[item - 1].product_name}`.green);
+                console.log(`${amount}  of this:  ${name}`.green);
                 console.log(`---------------------`);
                 console.log(`${info[item - 1].price} * ${amount}`.red);
                 console.log(`You owe $${(amount * info[item - 1].price).toPrecision(4)}`);
                 console.log(`---------------------\n`);
-                updateStore(item, amount, x);
             } else {
                 console.log(`Sorry, we don't have enough of that!`);
             }
 
-            inquirer.prompt(endQuestion).then(ans => {
-                if (ans.escape) {
-                    start();
-                } else {
-                    connection.end();
-                };
-            });
+            setTimeout(again, 2000); //added this to avoid the the again function being called ontop of the store being updated
 
 
         });
@@ -134,7 +131,20 @@ function display() {
     })
 };
 
-function updateStore(product, amount, stock) {
+function again() {
+    inquirer.prompt(endQuestion).then(ans => {
+        if (ans.escape) {
+            start();
+        } else {
+            connection.end();
+        };
+    });
+
+}
+
+
+
+function updateStore(name, product, amount, stock) {
     var newStock = stock - amount;
 
     var q = `UPDATE products SET ? where ?`
@@ -146,7 +156,10 @@ function updateStore(product, amount, stock) {
         }
     ], function(error, res) {
         if (error) throw error
-        console.log(res);
+        console.log(`---------------------`);
+        console.log(`updating stock of ${name}.....WAS: ${stock}-->NOW: ${newStock}`);
+        console.log(`---------------------`);
+        // console.log(res);
     });
 
 }
